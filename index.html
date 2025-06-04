@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   <script>
+      let tok = ""
+      async function gettoken(){
+         const mail = document.getElementById("mails").value
+         const pass = document.getElementById("pwd").value
+         const content = {
+            "email":mail,
+            "password":pass
+         }
+         let head = new Headers();
+         head.append("Content-Type","application/json")
+         const result = await fetch("https://b3-api-gw5z.onrender.com/auth/login",{
+            method:"post",
+            headers:head,
+            body:JSON.stringify(content)
+         })
+         tok = await result.json()
+         if (tok.statusCode){
+            document.getElementsByTagName("body")[0].appendChild(document.createElement('p'))
+            document.getElementsByTagName('p')[0].textContent = "Va niquer tes morts, c'est bon pour toi !!!"
+         }
+         else{
+            localStorage.setItem('token',tok.access_token)
+            window.location = "./index2.html"
+         }
+      }
+      
+
+   </script>
+</head>
+<body>
+   <div>
+      <label>Email <input type="text" id="mails" placeholder="dsemac@gmail.com" ></label>
+      <label>Mot de Passe <input type="password" id="pwd" placeholder="********" ></label>
+      <button id="submit" onclick="gettoken()">Submit</button>
+   </div>
+</body>
+</html>

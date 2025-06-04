@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   <script>
+      async function getprofile(){
+         let head = new Headers();
+         head.append("Authorization",`Bearer ${localStorage.getItem("token")}`)
+         const result = await fetch("https://b3-api-gw5z.onrender.com/auth/profile",{
+            method:"get",
+            headers:head
+         })
+         let rep = await result.json()
+         //const tab = Object.key(rep)
+         //const page = document.getElementById("la")
+
+         tok = await result.json()
+         if (localStorage.value != ""){
+            window.location = "./index.html"
+         }
+      }
+      getprofile()
+      
+
+   </script>
+</head>
+<body id="la">
+   
+</body>
+</html>
