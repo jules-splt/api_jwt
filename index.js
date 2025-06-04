@@ -65,6 +65,35 @@ app.get('/profile', (req, res) => {
   res.status(200).json({ email: "user@example.com", profile: "standard" });
 });
 
+// Atricle
+app.get('/articles', async (req, res) => {
+  let articles = {}
+  let dbdata = await pool.query(`select id, auteur, titre, contenu, datePubli from Articles`)
+  if (dbdata.rowCount <=0) {res.status(404).json({message:"not found"})}
+  dbdata.rows.forEach(element => {
+      articles[element.id]={
+          auteur: element.auteur,
+          titre: element.titre,
+          contenu: element.contenu,
+          datepubli: element.datepubli,
+      }
+  });
+  res.status(200).json({message:articles})
+});
+
+// Article{id}
+app.get('/articles/:id', async (req, res) => { // info de l'utilisateur
+  let dbdata = await pool.query(`select id, auteur, titre, contenu, datePubli from Articles where Articles.id=$1`,[req.params.id])
+  if (dbdata.rowCount <=0) {res.status(404).json({message:"not found"})}
+  res.status(200).json({
+      id: dbdata.rows[0].id,
+      auteur: dbdata.rows[0].auteur,
+      titre: dbdata.rows[0].titre,
+      contenu: dbdata.rows[0].contenu,
+      datepubli: dbdata.rows[0].datepubli,
+  });
+});
+
 // Middleware de gestion des erreurs serveur
 app.use((err, req, res, next) => {
   console.error(err.stack);
